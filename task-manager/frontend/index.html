@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="page">
+        <h2>Login</h2>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button class="btn" onclick="login()">Login</button>
+        <p>Don't have an account? <a href="javascript:void(0);" onclick="showSignup()">Sign up</a></p>
+    </div>
+
+    <!-- Signup Page -->
+    <div id="signupPage" class="page" style="display:none;">
+        <h2>Signup</h2>
+        <input type="text" id="newUsername" placeholder="Username">
+        <input type="password" id="newPassword" placeholder="Password">
+        <button class="btn" onclick="signup()">Sign Up</button>
+        <p>Already have an account? <a href="javascript:void(0);" onclick="showLogin()">Login</a></p>
+    </div>
+
+    <!-- Task Manager Page -->
+    <div id="taskPage" class="page" style="display:none;">
+        <h2>Task Manager</h2>
+        <input type="text" id="taskTitle" placeholder="Task Title">
+        <input type="text" id="taskDesc" placeholder="Task Description">
+        <button class="btn" onclick="addTask()">Add Task</button>
+
+        <h3>Task List</h3>
+        <ul id="taskList"></ul>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
