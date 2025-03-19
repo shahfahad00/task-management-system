@@ -1,0 +1,61 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      # Step 2: Set up Node.js environment
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      # Step 3: Install dependencies
+      - name: Install Dependencies
+        run: |
+          npm install
+          cd backend
+          npm install
+
+      # Step 4: Run tests (Frontend & Backend)
+      - name: Run Tests
+        run: |
+          npm run test  # Run frontend tests
+          cd backend && npm run test  # Run backend tests
+
+      # Step 5: Build the application (Frontend & Backend)
+      - name: Build Application
+        run: |
+          npm run build  # Build frontend
+          cd backend && npm run build  # Build backend
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      # Step 1: Checkout the code again
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      # Step 2: Deploy to Staging Server (via SSH or SCP)
+      - name: Deploy to Staging
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}  # Store SSH private key in GitHub Secrets
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          scp -r build/* user@staging-server:/path/to/deploy
