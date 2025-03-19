@@ -1,0 +1,38 @@
+name: Full Stack CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main  # Trigger on changes to the main branch
+  pull_request:
+    branches:
+      - main  # Trigger on pull request to main branch
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Step 2: Set up Node.js (Frontend React)
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      # Step 3: Install frontend dependencies
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm install
+
+      # Step 4: Run frontend tests (if applicable)
+      - name: Run frontend tests
+        run: |
+          cd frontend
+          npm run test -- --coverage
+
+      # Step 5: Set up Python (Backend Django)
+      - name: Set up Python
